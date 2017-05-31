@@ -10,6 +10,13 @@
 	document.getElementById("svg").style.width = "100%";
 	document.getElementById("svg").style.height = "100%";
 
+	var timeDown = 0;
+	
+	function getTime(){
+		var date = new Date();
+		return date.getTime();
+	}
+
 	function Circle(cx, cy, html_id)
 	{
 		var html_id = html_id;
@@ -31,7 +38,7 @@
 			var circle = makeSVG('circle', 
 				{ 	cx: this.info.cx,
 				  	cy: this.info.cy,
-				  	r:  10,
+				  	r:  10 + (timeDown/50),
 				  	id: html_id,
 				  	style: "fill: black"
 				});
@@ -103,7 +110,15 @@
 	setInterval(playground.loop, 15);
 
 	document.onclick = function(e) {
+			//grab mousedown time
+			document.onmousedown = function(e){
+				mousedown_time = getTime();
+			}
+			document.onmouseup = function(e){
+				timeDown = getTime() - mousedown_time;
+			}
 		playground.createNewCircle(e.x,e.y);
+		timeDown = 0;
 	}
 	
 	</script>
